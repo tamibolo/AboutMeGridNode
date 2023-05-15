@@ -1,25 +1,70 @@
 <%- include('partials/header'); -%>
-<body>
-    <!-- Header -->
-    <header>
-        <h1> Tami Bolodeoku </h1>
-    </header>
 
-    <!-- Menu -->
-    <nav>
-        <ul>
-            <li><a href="/" class="active">Home</a></li>
-            <li><a href="/aboutme">About Me</a></li>
-            <li><a href="/websites">Websites I Like</a></li>
-            <li><a href="/books">Books</a></li>
-            <li><a href="/random">Random Image</a></li>
-        </ul>
-    </nav>
+    <body>
+        <!-- Header -->
+        <header>
+            <h1> Tami Bolodeoku </h1>
+        </header>
 
-    <!-- Content -->
-    <main>
+        <!-- Menu -->
+        <nav>
+            <ul>
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/aboutme">About Me</a></li>
+                <li><a href="/websites">Websites I Like</a></li>
+                <li><a href="/books">Books</a></li>
+                <li><a href="/random">Random Image</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <!-- <main>
         <h2> Welcome to my website! </h2>
         <p> Choose a page from the menu to get started. </p>
-    </main>
-<%- include('partials/footer'); -%>
-    
+    </main> -->
+        <main>
+            <section>
+                <article>
+                    <!-- <button id="back">20 words back</button> -->
+                    <form action="/" name="wordsform" method="post">
+                    <input type="submit" value="'<%= place %> + 20 %'" name="back">
+                    <ul>
+                        <% words.forEach((word)=> { %>
+                            <li>
+                                <h4>
+                                    <%= word %>
+                                        </h2>
+                            </li>
+                            <hr />
+                            <% }) %>
+                    </ul>
+                    <!-- <button id="forward"> 20 words forward</button> -->
+
+                    <input type="submit" value='<%= place %> + 20 %' name="forward">
+                </form>
+                </article>
+            </section>
+        </main>
+
+        <script>
+            let id = 0;
+            let place = parseInt(<%= place  %>) || 0;
+            let forward = document.getElementById('forward')
+            let back = document.getElementById('back')
+
+            back.addEventListener('click', (event) => {
+                if (place - 20 >= 0) {
+                    place = place - 20
+                    location.href=`/${place}`
+                } else {
+                    location.href-`/0`
+                }
+            })
+            forward.addEventListener('click', (event) => {
+                place = place + 20
+                location.href=`/${place`
+            })
+
+        </script>
+
+        <%- include('partials/footer'); -%>
