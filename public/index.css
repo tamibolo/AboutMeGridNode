@@ -1,0 +1,64 @@
+/* Set the display property of the body element to grid */
+body {
+    display: grid;
+    /* Define the grid columns */
+    grid-template-columns: 1fr 3fr;
+    /* Define the grid rows */
+    grid-template-rows: auto 1fr auto;
+    /* Define the height of the grid rows */
+    grid-auto-rows: minmax(100px, auto);
+    /* Define the gap between the grid items */
+    grid-gap: 10px;
+    /* Define the grid areas */
+    grid-template-areas:
+        "header header"
+        "menu content"
+        "footer footer";
+}
+
+/* Style the header */
+header {
+    grid-area: header;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Style the menu */
+nav {
+    grid-area: menu;
+    background-color: #ccc;
+    padding: 10px;
+}
+
+/* menu links */
+nav a {
+    display: block;
+    padding: 5px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Style the active menu link */
+nav a.active {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Style the content */
+main {
+    grid-area: content;
+    padding: 10px;
+    background-color: lightpink;
+}
+
+/* Style the footer */
+footer {
+    grid-area: footer;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}

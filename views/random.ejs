@@ -1,0 +1,27 @@
+<%- include('partials/header'); -%>
+
+    <body>
+        <!-- Header -->
+        <header>
+            <h1>Tami Bolodeoku</h1>
+        </header>
+
+        <!-- Menu -->
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/aboutme">About Me</a></li>
+                <li><a href="/websites">Websites I Like</a></li>
+                <li><a href="/books">Books</a></li>
+                <li><a href="/random" class="active">Random Image</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <main>
+            <h3>Here is a button that generates a random picture:</h3>
+            <img id="img" src="" alt="" width="50">
+            <input id="button" type="button" value="get random image">
+        </main>
+
+        <%- include('partials/footer'); -%>

@@ -1,0 +1,48 @@
+<%- include('partials/header'); -%>
+
+<body>
+    <!-- Header -->
+    <header>
+        <h1> Tami Bolodeoku </h1>
+    </header>
+
+    <!-- Menu -->
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/aboutme">About Me</a></li>
+            <li><a href="/websites">Websites I Like</a></li>
+            <li><a href="/books" class="active">Books</a></li>
+            <li><a href="/random" class="active">Random Image</a></li>
+        </ul>
+    </nav>
+
+    <!-- Content -->
+    <main>
+        <h2> Books </h2>
+        <h5> Here are the books that I read last week and my ratings: </h5>
+        <table>
+            <tr>
+                <th>Author </th>
+                <th>Title</th>
+                <th>Rating</th>
+            </tr>
+            <tr>
+                <td>Jane Austen</td>
+                <td>Pride and Prejudice</td>
+                <td>7/10</td>
+            </tr>
+            <tr>
+                <td>Mary Shelley</td>
+                <td>Frankenstein</td>
+                <td> 6/10</td>
+            </tr>
+            <tr>
+                <td>Steve Silberman</td>
+                <td>Neurotribes</td>
+                <td>9/10</td>
+            </tr>
+        </table>
+    </main>
+
+<%- include('partials/footer'); -%>
