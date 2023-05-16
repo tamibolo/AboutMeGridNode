@@ -3,7 +3,8 @@ const ejs = require("ejs")
 const path = require('path') 
 
 const router = express.Router({ mergeParams: true });
-const fs = require('fs');
+const fs = require('node:fs/promises');
+const readFile = fs.readFile;
 
 
 const imageUrls = ["images/ABOUTME.png", "images/HEADSHOT.JPG", "images/INSTAGRAM.png", "images/LINKEDIN.png", "images/doorClosed.png", "images/doorOpened.png"]
@@ -17,39 +18,39 @@ const app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
 const PORT = 8080; 
-let words = [];
 
-router.use('/:id', (req, res, next) => {
-  const { place } = req.body || 0;
-  const startIndex = id ? parseInt(place) : 0;
-  const pageSize = 20;
-  
-  const endIndex = startIndex + pageSize;
-  const paginatedWords = words.slice(startIndex, endIndex);
-  
-  res.render('index.ejs', {
-    words: paginatedWords,
-    place: place + 20
-  })
-});
+let wordlist = [];
+let url = 'enwords.txt'
 
-const loadWords = async () => {
-  if (words.length < 1) {
-    try {
-      fs.readFile(path.join(__dirname, 'enwords.txt'), 'utf8', function (err, data) {
-        if (err) {
-          console.error(err);
-          return;
+
+async function readFileContent(url) {
+    const data = await readFile(path.join(__dirname, url), { encoding: 'utf8' })
+    wordlist = data.split('\n')     
+}
+
+// Utility route handler function
+async function handler(req, res) {
+     try {
+        const language = req.body.language;
+        console.log(language);
+        if (language === "en") {
+            url = 'enwords.txt'
+        } else if (language === "fr") {
+            url = 'frwords.txt'
+        } else if (language === 'es') {
+            url = 'eswords.txt'
         }
-        
-        words = data.split('\n');
-      });
+
+        await readFileContent(url);
+        res.json(wordlist)
     } catch (error) {
-      console.log(error);
+         console.log(error);
     }
-  }
-  return words;
-};
+}
+
+app.post('/prev', handler);
+
+app.post('/next', handler);
 
 
 app.set('view engine', "ejs")
@@ -57,42 +58,32 @@ app.set('view engine', "ejs")
 app.use(express.static("public"))
 
 app.get('/', (req, res) => {
-  const { id } = req.params || 0;
-  const startIndex = id ? parseInt(id) : 0;
-  const pageSize = 20;
-  
-  const endIndex = startIndex + pageSize;
-  const paginatedWords = words.slice(startIndex, endIndex);
-  
-  res.render('index.ejs', {
-    words: paginatedWords,
-    place: id + 20
-  })
+  res.render('index.ejs')
 });
 
-// app.get('/aboutme', (req, res) => {
-//   res.render("aboutme")
-// });
+app.get('/aboutme', (req, res) => {
+  res.render("aboutme")
+});
 
-// app.get('/books', (req, res) => {
-//   res.render("books")
-// });
+app.get('/books', (req, res) => {
+  res.render("books")
+});
 
-// app.get('/websites', (req, res) => {
-//   res.render("websites")
-// });
+app.get('/websites', (req, res) => {
+  res.render("websites")
+});
 
-// app.get('/random', (req, res) => {
-//   res.render("random")
-// });
+app.get('/random', (req, res) => {
+  res.render("random")
+});
 
-// app.get('/random/generate', (req, res) => {
-//   res.json({url: generateRandomUrl()})
-// });
+app.get('/random/generate', (req, res) => {
+  res.json({url: generateRandomUrl()})
+});
 
 
 
-loadWords().then(() => {
+
   app.use('/', router);
   
   app.listen(PORT, () => {
@@ -100,4 +91,4 @@ loadWords().then(() => {
     console.log("to end press Ctrl + C");
   });
   
-});
+

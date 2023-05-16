@@ -1,5 +1,66 @@
 <%- include('partials/header'); -%>
+<style>
+        #buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
+        #buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #buttons a:hover {
+            background-color: #ccc;
+        }
+
+        #buttons #prev {
+            margin-right: 10px;
+        }
+
+        #buttons #next {
+            margin-left: 10px;
+        }
+
+        #words {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #number {
+            width: fit-content;
+            margin-right: 20px;
+        }
+        select {
+            padding: 8px;
+            font-size: 16px;
+            appearance: none;
+            /* background-image: url("dropdown-arrow.png");
+            background-position: right center;
+            background-repeat: no-repeat; */
+        }
+
+        option {
+            padding: 5px;
+            /* background-repeat: no-repeat;
+            background-position: 3px 50%; */
+        }
+
+       
+    </style>
     <body>
         <!-- Header -->
         <header>
@@ -22,49 +83,104 @@
         <h2> Welcome to my website! </h2>
         <p> Choose a page from the menu to get started. </p>
     </main> -->
-        <main>
-            <section>
-                <article>
-                    <!-- <button id="back">20 words back</button> -->
-                    <form action="/" name="wordsform" method="post">
-                    <input type="submit" value="'<%= place %> + 20 %'" name="back">
-                    <ul>
-                        <% words.forEach((word)=> { %>
-                            <li>
-                                <h4>
-                                    <%= word %>
-                                        </h2>
-                            </li>
-                            <hr />
-                            <% }) %>
-                    </ul>
-                    <!-- <button id="forward"> 20 words forward</button> -->
 
-                    <input type="submit" value='<%= place %> + 20 %' name="forward">
-                </form>
-                </article>
-            </section>
-        </main>
+    <main>
+
+        <div id="buttons">
+            <a href="#" id="prev">&laquo; Previous</a>
+            <a href="#" id="next">Next &raquo;</a>
+        </div>
+
+        <!-- div to hold the dropdown -->
+
+        <div class="container">
+            <div id="number">
+                <div>
+                    <label for="wordcount">Word count</label>
+                </div>
+                <input type="number" name="wordcount" id="wordcount">
+            </div>
+            
+            <select id="language">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+            </select>
+        </div>
+        <!-- put a div here to show the result -->
+        <div id="words"></div>
 
         <script>
-            let id = 0;
-            let place = parseInt(<%= place  %>) || 0;
-            let forward = document.getElementById('forward')
-            let back = document.getElementById('back')
+            // keep track of your current position in the list
+            // and pass it to the server along with if you want
+            // to get the next set or previous set of words (based
+            // on which button was clicked)
 
-            back.addEventListener('click', (event) => {
-                if (place - 20 >= 0) {
-                    place = place - 20
-                    location.href=`/${place}`
-                } else {
-                    location.href-`/0`
+                let wordsPerPage = 20; // Number of words to display per page
+                let currentPage = 0; // Starting page number
+                let totalPages = 0; // Total number of pages
+                let words;
+                let selectedOption;
+
+                async function fetchList(url) {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({language: selectedOption})
+                    });
+                    words = await res.json();
+                    totalPages = Math.ceil(words.length / wordsPerPage);
                 }
-            })
-            forward.addEventListener('click', (event) => {
-                place = place + 20
-                location.href=`/${place`
-            })
 
+                // function to display the words
+                function displayWords(page) {
+                    const startIndex = (page - 1) * wordsPerPage;
+                    const endIndex = startIndex + wordsPerPage;
+                    const pageWords = words.slice(startIndex, endIndex);
+                    const wordsElement = document.getElementById('words');
+                    wordsElement.innerHTML = `<p>${pageWords.join(' ')}</p>`
+                }
+
+
+                // Event listener for the previous button
+                document.getElementById('prev').addEventListener('click', async () => {
+                    
+                    await fetchList('/prev')
+
+                    if (currentPage > 1) {
+                        currentPage--;
+                        displayWords(currentPage);
+                    }
+                });
+
+                // Event listener for the next button
+                document.getElementById('next').addEventListener('click', async () => {
+
+                    await fetchList('/next')
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        displayWords(currentPage);
+                    }
+                })
+
+                // Event listener for wordcount input
+                document.getElementById('wordcount').addEventListener('input', (event) => {
+                    wordsPerPage = Number(event.target.value);
+                
+                })
+                // document.getElementById('wordcount').addEventListener('change', (event) => {
+                //     wordsPerPage = Number(event.target.value);
+                // })
+                // Event listener for the dropdown
+                const languageSelector = document.getElementById('language');
+
+                languageSelector.addEventListener('change', (event) => {
+                selectedOption = event.target.value;
+                })
         </script>
+    </main>
 
         <%- include('partials/footer'); -%>

@@ -6,21 +6,73 @@
     <meta name="viewport" content="width=device-width">
     <title>List 5-letter words</title>
     <style>
-    </style>
+        #buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
+        #buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #buttons a:hover {
+            background-color: #ccc;
+        }
+
+        #buttons #prev {
+            margin-right: 10px;
+        }
+
+        #buttons #next {
+            margin-left: 10px;
+        }
+
+        #words {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #number {
+            width: fit-content;
+            margin-right: 20px;
+        }
+        select {
+            padding: 8px;
+            font-size: 16px;
+            appearance: none;
+            /* background-image: url("dropdown-arrow.png");
+            background-position: right center;
+            background-repeat: no-repeat; */
+        }
+
+        option {
+            padding: 5px;
+            /* background-repeat: no-repeat;
+            background-position: 3px 50%; */
+        }
+
+       
+    </style>
 </head>
 
 <body>
     <!-- put previous and next buttons here -->
 
-    <!-- put a div here to show the result -->
-
-    <script>
-        // keep track of your current position in the list
-        // and pass it to the server along with if you want
-        // to get the next set or previous set of words (based
-        // on which button was clicked)
-    </script>
+ 
 </body>
 
 </html>
